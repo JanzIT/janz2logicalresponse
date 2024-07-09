@@ -3,6 +3,7 @@ import { isNotANumber } from "@/utils/validations";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Home() {
@@ -12,9 +13,19 @@ export default function Home() {
   const [toastActive, setToastActive] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [currentAddNumber, setCurrentAddNumber] = useState('')
-
+  
+  const { i18n } = useTranslation()
   const tCommon = useTranslation('common').t;
   const tToasts = useTranslation('toasts').t;
+
+  const router = useRouter()
+
+  function handleChangeLanguage(newLanguage) {
+    if (router.locale !== newLanguage) {
+        const { pathname, asPath, query } = router
+        router.push({ pathname, query }, asPath, { locale: newLanguage, scroll: false })
+    }
+}
 
   const showToastMessage = (type, message) => {
     if (!toastActive) {
@@ -84,7 +95,6 @@ export default function Home() {
       setPrimeNumber(value);
       }
       };
-      
       return (
         <>
       <Head>
@@ -95,9 +105,9 @@ export default function Home() {
       </Head>
       <main>
         <div className="prime-number-container">
-        <button className="prime-number-button">PT</button>
-        <button className="prime-number-button">EN</button>
-        <button className="prime-number-button">ES</button>
+        <button style={{backgroundColor: i18n.language === "pt" ? "blue" : "transparent"}} onClick={() => handleChangeLanguage("pt")} className="prime-number-button">PT</button>
+        <button style={{backgroundColor: i18n.language === "en" ? "blue" : "transparent"}} onClick={() => handleChangeLanguage("en")} className="prime-number-button">EN</button>
+        <button style={{backgroundColor: i18n.language === "es" ? "blue" : "transparent"}} onClick={() => handleChangeLanguage("es")} className="prime-number-button">ES</button>
           <p>Insira um número e clique no botão para conferir se é primo:</p>
           <input
             className="prime-number-input"
