@@ -1,3 +1,5 @@
 {
-        "is_prime": "El numero es primo!"
+        "is_prime": "El numero es primo!",
+        "isnt_prime": "El numero no es primo!",
+        "not_number": "Por favor, introduzca un número"
 }

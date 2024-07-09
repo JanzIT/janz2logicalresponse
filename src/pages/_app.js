@@ -5,7 +5,7 @@ import { appWithTranslation } from 'next-i18next';
 
  function App({ Component, pageProps }) {
   return <>
-    <Component {...pageProps} />;
+    <Component {...pageProps} />
     <ToastContainer
       newestOnTop
       stacked
