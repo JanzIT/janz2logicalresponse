@@ -1,3 +1,6 @@
 {
-    "aaa": "The number is prime!"
+    "is_prime": "The number is prime!",
+    "isnt_prime": "The number is not prime!",
+    "not_number": "Please enter a number",
+    "clear_success": "Numbers successfully cleared!"
 }

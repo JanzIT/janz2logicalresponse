@@ -1,3 +1,10 @@
 {
-    "verify": "Verificar"
+    "verify": "Verificar",
+    "prime_main_text": "Insira um número e clique no botão para conferir se é primo:",
+    "order_main_text": "Insira números para ordená-los:",
+    "ordered_numbers": "Números ordenados:",
+    "check_prime": "Verificar se um número é primo",
+    "add_number": "Adicionar número",
+    "reset_numbers": "Resetar números",
+    "order_numbers": "Ordenar números"
 }
