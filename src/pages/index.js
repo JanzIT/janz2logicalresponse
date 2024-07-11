@@ -43,14 +43,16 @@ export default function Home() {
   };
 
   const checkPrime = (num) => {
-
-    if (num < 2) {
+    const bigNum = BigInt(num)
+    const numSQRT = Math.sqrt(num)
+    
+    if (bigNum < 2) {
       showToastMessage("error", tToasts("isnt_prime"));
       return false;
     }
 
-    for (let i = 2; i <= Math.sqrt(num); i++) {
-      if (num % i === 0) {
+    for (let i = 2; i <= numSQRT ; i++) {
+      if (bigNum % BigInt(i) === 0n) {
         showToastMessage("error", tToasts("isnt_prime"));
         return false;
       }
@@ -130,6 +132,7 @@ export default function Home() {
 
   const handlePrimeNumberInputChange = (event) => {
     const { value } = event.target;
+    setPrimeNumber("")
     if (isNotANumber(value)) {
       showToastMessage("error", tToasts("not_number"));
     } else {
