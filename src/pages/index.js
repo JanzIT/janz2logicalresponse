@@ -5,8 +5,11 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { Button } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 export default function Home() {
+  const [loading, { toggle }] = useDisclosure();
   const [primeNumber, setPrimeNumber] = useState('');
   const [isPrime, setIsPrime] = useState(null);
   const [numbers, setNumbers] = useState([]);
@@ -40,33 +43,50 @@ export default function Home() {
   };
 
   const checkPrime = (num) => {
+
     if (num < 2) {
       showToastMessage("error", tToasts("isnt_prime"));
       return false;
     }
+
     for (let i = 2; i <= Math.sqrt(num); i++) {
       if (num % i === 0) {
         showToastMessage("error", tToasts("isnt_prime"));
         return false;
       }
     }
+
     showToastMessage("success", tToasts("is_prime"));
     return true;
   };
 
+
   const handleCheckPrime = () => {
-    const num = parseInt(primeNumber, 10);
-    if (isNotANumber(num)) {
+
+    if (primeNumber.toString().includes('.')) {
+      showToastMessage("error", tToasts("decimal_number"));
+      return false;
+    }
+
+    else if (primeNumber.length > 45) {
+      showToastMessage("warning", tToasts("number_too_long"));
+    }
+
+    else if (!primeNumber) {
+      showToastMessage("warning", tToasts("no_number"));
+    }
+
+    else if (isNotANumber(primeNumber)) {
       showToastMessage("error", tToasts("not_number"));
       return;
     }
-    setIsPrime(checkPrime(num));
+    else { setIsPrime(checkPrime(primeNumber)); }
   };
 
   const handleChangeAddNumber = (event) => {
     event.preventDefault();
     const { value } = event.target;
-    if (isNotANumber(value)) {
+    if (isNotANumber(value) || value === ".") {
       showToastMessage("error", tToasts("not_number"));
     } else {
       setCurrentAddNumber(value);
@@ -74,18 +94,38 @@ export default function Home() {
   };
 
   const handleAddNumber = (event) => {
-    event.preventDefault();
-    if (currentAddNumber.length === 0) {
-      showToastMessage("error", tToasts("not_number"));
-    } else {
+    if (numbers.length >= 10) {
+      showToastMessage("error", tToasts("limit_reached"));
+    }
+    else if (currentAddNumber.length === 0) {
+      showToastMessage("warning", tToasts("no_number"));
+    }
+      else if (currentAddNumber.length > 45) {
+      showToastMessage("warning", tToasts("number_too_long"));
+    }
+    else {
       setNumbers((prevNumbers) => [...prevNumbers, currentAddNumber].sort((a, b) => a - b));
       setCurrentAddNumber("");
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      if (activeView === 'prime') {
+        handleCheckPrime();
+      } else {
+        handleAddNumber();
+      }
+    }
+  };
+
   const handleResetNumbers = () => {
-    setNumbers([]);
-    showToastMessage("success", tToasts("clear_success"));
+    if (numbers.length === 0) {
+      showToastMessage("warning", tToasts("no_number"));
+    } else {
+      setNumbers([]);
+      showToastMessage("success", tToasts("clear_success"));
+    }
   };
 
   const handlePrimeNumberInputChange = (event) => {
@@ -110,57 +150,131 @@ export default function Home() {
         <link rel="icon" href="/2logicallogo.webp" />
       </Head>
       <main>
-        <div>
-        <button style={{ backgroundColor: i18n.language === "pt" ? "blue" : "transparent" }} onClick={() => handleChangeLanguage("pt")} className="prime-number-button">PT</button>
-        <button style={{ backgroundColor: i18n.language === "en" ? "blue" : "transparent" }} onClick={() => handleChangeLanguage("en")} className="prime-number-button">EN</button>
-        <button style={{ backgroundColor: i18n.language === "es" ? "blue" : "transparent" }} onClick={() => handleChangeLanguage("es")} className="prime-number-button">ES</button>
-          <button
-            onClick={toggleView}
-          >
-            {activeView === 'prime' ? tCommon("order_numbers") : tCommon("check_prime")}
-          </button>
-        </div>
-        {activeView === 'prime' ? (
-          <div className="prime-number-container">
-            <p>{tCommon("prime_main_text")}</p>
-            <input
-              className="prime-number-input"
-              value={primeNumber}
-              onChange={handlePrimeNumberInputChange}
-            />
-            <button className="prime-number-button" onClick={handleCheckPrime}>
-              {tCommon("verify")}
-            </button>
-            {isPrime !== null && (
-              <p>{isPrime ? tToasts("is_prime") : tToasts("isnt_prime")}</p>
-            )}
+        <div className="container">
+          <img
+            src="2logicallogo.webp"
+            alt="2logical Main Logo"
+            className="logical-main-logo"
+            fetchpriority="high"
+          />
+          <span className="header-text">
+            {tCommon("challenge_response_text")}
+          </span>
+          <img
+            src="https://static.wixstatic.com/media/a4e037_9b1c4a0553f84e85b65301537e77c343~mv2.gif"
+            alt="panel.gif"
+            className="centered-image"
+            fetchpriority="high"
+          />
+          <div className="button-group">
+            <Button.Group className="main-button-group">
+              <Button
+                variant={i18n.language === "en" ? "filled" : "outline"}
+                onClick={() => handleChangeLanguage("en")}
+                loading={loading}
+                autoContrast
+                className="prime-number-button"
+              >
+                EN
+              </Button>
+              <Button
+                variant={i18n.language === "pt" ? "filled" : "outline"}
+                onClick={() => handleChangeLanguage("pt")}
+                loading={loading}
+                autoContrast
+                className="prime-number-button"
+              >
+                PT
+              </Button>
+              <Button
+                variant={i18n.language === "es" ? "filled" : "outline"}
+                onClick={() => handleChangeLanguage("es")}
+                loading={loading}
+                autoContrast
+                className="prime-number-button"
+              >
+                ES
+              </Button>
+            </Button.Group>
           </div>
-        ) : (
-          <div className="prime-number-container">
-            <p>{tCommon("order_main_text")}</p>
-            <input
-              value={currentAddNumber}
-              name="number"
-              className="prime-number-input"
-              onChange={handleChangeAddNumber}
-            />
-            <button
-              className="prime-number-button"
-              type="submit"
-              onClick={handleAddNumber}
+          <Button.Group>
+            <Button
+              color="#FF4040"
+              autoContrast
+              onClick={() => toggleView('prime')}
+              className={`toggle-button ${activeView === 'prime' ? 'active' : ''}`}
             >
-              {tCommon("add_number")}
-            </button>
-            {numbers.length > 0 && (
-              <>
-                <p>{tCommon("ordered_numbers")} {numbers.join(', ')}</p>
-                <button className="prime-number-button" onClick={handleResetNumbers}>
+              {tCommon("prime_number_check")}
+            </Button>
+            <Button
+              color="#FF4040"
+              autoContrast
+              onClick={() => toggleView('order')}
+              className={`toggle-button ${activeView === 'order' ? 'active' : ''}`}
+            >
+              {tCommon("order_numbers")}
+            </Button>
+          </Button.Group>
+          {activeView === 'prime' ? (
+            <div className="prime-number-container">
+              <p className="prime-main-text">{tCommon("prime_main_text")}</p>
+              <input
+                className="prime-number-input"
+                value={primeNumber}
+                onChange={handlePrimeNumberInputChange}
+                onKeyDown={handleKeyPress}
+              />
+              <Button color="#FF4040" autoContrast onClick={handleCheckPrime}>
+                {tCommon("verify")}
+              </Button>
+              {isPrime !== null && (
+                <p className="is-prime-text">{isPrime ? tToasts("is_prime") : tToasts("isnt_prime")}</p>
+              )}
+            </div>
+          ) : (
+            <div className="add-number-container">
+              <p className="order-main-text">{tCommon("order_main_text")}</p>
+              <input
+                value={currentAddNumber}
+                name="number"
+                className="add-number-input"
+                onChange={handleChangeAddNumber}
+                onKeyDown={handleKeyPress}
+              />
+              {numbers.length > 0 && (
+                <>
+                  <p className="ordered-numbers-text">{tCommon("ordered_numbers")}</p>
+                  <span> {numbers.join(', ')} </span>
+                </>
+              )}
+              <Button.Group>
+                <Button
+                  color="#FF4040"
+                  className="add-number-button"
+                  type="submit"
+                  onClick={handleAddNumber}
+                >
+                  {tCommon("add_number")}
+                </Button>
+                <Button style={{ opacity: numbers.length > 0 ? 1 : 0.6 }} color="#FF4040" className="reset-number-button" onClick={handleResetNumbers}>
                   {tCommon("reset_numbers")}
-                </button>
-              </>
-            )}
-          </div>
-        )}
+                </Button>
+              </Button.Group>
+            </div>
+          )}
+          <footer className="footer">
+            <img
+              src="2logicalBottomLogo.webp"
+              alt="2 Logical Bottom Logo"
+              className="logical-bottom-logo"
+            />
+            <img
+              src="UEBottomLogo.webp"
+              alt="2 Logical Bottom Logo"
+              className="UE-bottom-logos"
+            />
+          </footer>
+        </div>
       </main>
     </>
   );

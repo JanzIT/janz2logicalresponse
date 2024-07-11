@@ -1,0 +1,156 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  padding: 20px;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  overflow-y: auto;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+
+body {
+  font-family: "Poppins Semibold", sans-serif;
+  color: white;
+  word-spacing: 2px;
+  font-size: 16px; /* Adjusted font size for mobile */
+}
+
+.header-text {
+  font-family: "Poppins Semibold", sans-serif;
+  color: white;
+  word-spacing: 2px;
+  font-size: 20px; /* Adjusted font size for mobile */
+  text-align: center;
+  padding-top: 25px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.logical-bottom-logo {
+  margin-top: 20px;
+  height: 29px;
+  width: 203px;
+}
+
+.UE-bottom-logos {
+  height: 50px;
+  max-width: 100%;
+}
+
+.centered-image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+/* .Button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-direction: column;
+  } */
+
+.main-button-group {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.toggle-button {
+  margin-top: 20px;
+  font-size: 16px;
+  opacity: 0.6;
+}
+
+.toggle-button.active {
+  opacity: 1;
+}
+
+.prime-number-container,
+.add-number-container {
+  text-align: center;
+  margin-top: 20px;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.prime-number-input,
+.add-number-input {
+  width: 100%;
+  max-width: 300px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.add-number-button,
+.prime-number-button,
+.reset-number-button {
+  margin-top: 10px;
+}
+
+.prime-main-text,
+.order-main-text,
+.is-prime-text,
+.ordered-numbers-text {
+  font-family: "Poppins Semibold", sans-serif;
+  color: white;
+  word-spacing: 2px;
+  font-size: 16px;
+  margin: 0px;
+  padding-top: 10px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 40px;
+  }
+
+  .centered-image {
+    max-width: 569px;
+    height: 569px;
+    margin: 0px;
+  }
+
+  .button-group {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    flex-direction: column;
+  }
+
+  .toggle-button {
+    margin-top: 20px;
+    font-size: 20px;
+  }
+
+  .prime-main-text,
+  .order-main-text,
+  .is-prime-text,
+  .ordered-numbers-text {
+    font-size: 20px;
+    padding: 0px;
+  }
+
+  .prime-number-input,
+  .add-number-input {
+    max-width: 400px;
+  }
+}
