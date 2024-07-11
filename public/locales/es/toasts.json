@@ -1,7 +1,11 @@
 {
-        "is_prime": "El número es primo!",
-        "isnt_prime": "El número no es primo!",
-        "not_number": "Por favor, introduzca un número",
-        "clear_success": "¡Números borrados con éxito!"
-    }
-    
+    "is_prime": "¡El número es primo!",
+    "isnt_prime": "¡El número no es primo!",
+    "not_number": "Por favor ingrese hasta 10 números enteros",
+    "clear_success": "¡Números eliminados con éxito!",
+    "limit_reached": "Ya hay 10 números",
+    "decimal_number": "Por favor ingrese hasta 10 números enteros",
+    "no_numbers": "¡Necesitas ingresar un número primero!",
+    "number_too_long": "El número no puede exceder los 45 dígitos."
+  }
+  

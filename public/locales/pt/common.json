@@ -1,10 +1,12 @@
 {
-    "verify": "Verificar",
-    "prime_main_text": "Insira um número e clique no botão para conferir se é primo:",
-    "order_main_text": "Insira números para ordená-los:",
-    "ordered_numbers": "Números ordenados:",
-    "check_prime": "Verificar se um número é primo",
-    "add_number": "Adicionar número",
-    "reset_numbers": "Resetar números",
-    "order_numbers": "Ordenar números"
+  "challenge_response_text": "Resposta ao Desafio de Estágio do Janz",
+  "verify": "Verificar",
+  "order_numbers": "Ordenar Números",
+  "prime_number_check": "Número Primo",
+  "prime_main_text": "Verifique se o número é primo:",
+  "order_main_text": "Digite até 10 números para ordená-los:",
+  "ordered_numbers": "Números ordenados:",
+  "check_prime": "Verificar se é primo",
+  "add_number": "Adicionar número",
+  "reset_numbers": "Resetar números"
 }
