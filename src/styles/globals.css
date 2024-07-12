@@ -97,11 +97,19 @@ body {
 .prime-number-button,
 .reset-number-button {
   margin-top: 10px;
+  transition: transform 0.3s ease;
+}
+
+.add-number-button:hover,
+.prime-number-button:hover,
+.reset-number-button:hover {
+  transform: scale(1.1); 
 }
 
 .prime-main-text,
 .order-main-text,
 .is-prime-text,
+.logical-reserved-text,
 .ordered-numbers-text {
   font-family: "Poppins Semibold", sans-serif;
   color: white;

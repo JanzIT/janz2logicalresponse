@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Button } from '@mantine/core';
 
 export default function Home() {
-  const [loading, setLoading] = useState(null)
+  // const [loading, setLoading] = useState(null) - loading={loading}(inline/button)
   const [primeNumber, setPrimeNumber] = useState('');
   const [isPrime, setIsPrime] = useState(null);
   const [numbers, setNumbers] = useState([]);
@@ -23,16 +23,41 @@ export default function Home() {
 
   const router = useRouter();
 
+
+
   /**
- * Checks the Language route and changes it.
- * @param {string} newLanguage - The new language to switch to.
- */
+   * Checks the Language route and changes it accordingly.
+   * @param {string} newLanguage - The new language to switch to.
+  */
   function handleChangeLanguage(newLanguage) {
     if (router.locale !== newLanguage) {
       const { pathname, asPath, query } = router;
       router.push({ pathname, query }, asPath, { locale: newLanguage, scroll: false });
     }
   }
+
+
+  /**
+   * Toggles between the prime number view and the order numbers view.
+  */
+  const toggleView = () => {
+    setActiveView((prevView) => (prevView === 'prime' ? 'order' : 'prime'));
+  };
+
+
+  /**
+  * Handles key press events to trigger relevant actions.
+  * @param {object} event - The key press event.
+  */
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      if (activeView === 'prime') {
+        handleCheckPrime();
+      } else {
+        handleAddNumber();
+      }
+    }
+  };
 
 
   /**
@@ -53,10 +78,59 @@ export default function Home() {
 
 
   /**
+   * Handles the change event for the prime number input.
+   * @param {object} event - The input change event.
+   */
+  const handlePrimeNumberInputChange = (event) => {
+    const { value } = event.target;
+
+    if (value.length > 17) {
+      showToastMessage("warning", tToasts("prime_number_too_long"));
+    }
+
+    if (isNotANumber(value)) {
+      showToastMessage("error", tToasts("not_number"));
+    } else {
+      setIsPrime(null);
+      setPrimeNumber(value);
+    }
+  };
+
+
+  /**
+ * Checks if a number is prime.
+ * @param {number|string} num - The number to be checked.
+ * @returns {boolean} - Returns true if the number is prime, false otherwise.
+ */
+  const checkPrime = (num) => {
+    const bigNum = BigInt(num)
+    const numSQRT = Math.sqrt(num)
+
+    if (bigNum < 2) {
+      showToastMessage("error", tToasts("isnt_prime"));
+      // setLoading(false)
+      return false;
+    }
+
+    for (let i = 2; i <= numSQRT; i++) {
+      if (bigNum % BigInt(i) === 0n) {
+        showToastMessage("error", tToasts("isnt_prime"));
+        // setLoading(false)
+        return false;
+      }
+    }
+
+    showToastMessage("success", tToasts("is_prime"));
+    // setLoading(false)
+    return true;
+  };
+
+
+  /**
   * Handles the prime number check logic.
   */
   const handleCheckPrime = () => {
-    setLoading(true)
+    // setLoading(true)
     if (primeNumber.toString().includes('.')) {
       showToastMessage("error", tToasts("decimal_number"));
       return false;
@@ -78,33 +152,6 @@ export default function Home() {
   };
 
 
-  /**
- * Checks if a number is prime.
- * @param {number|string} num - The number to be checked.
- * @returns {boolean} - Returns true if the number is prime, false otherwise.
- */
-  const checkPrime = (num) => {
-    const bigNum = BigInt(num)
-    const numSQRT = Math.sqrt(num)
-
-    if (bigNum < 2) {
-      showToastMessage("error", tToasts("isnt_prime"));
-      setLoading(false)
-      return false;
-    }
-
-    for (let i = 2; i <= numSQRT; i++) {
-      if (bigNum % BigInt(i) === 0n) {
-        showToastMessage("error", tToasts("isnt_prime"));
-        setLoading(false)
-        return false;
-      }
-    }
-
-    showToastMessage("success", tToasts("is_prime"));
-    setLoading(false)
-    return true;
-  };
 
 
   /**
@@ -114,6 +161,9 @@ export default function Home() {
   const handleChangeAddNumber = (event) => {
     event.preventDefault();
     const { value } = event.target;
+    if (value.length > 45) {
+      showToastMessage("warning", tToasts("number_too_long"));
+    }
     if (isNotANumber(value) || value === ".") {
       showToastMessage("error", tToasts("not_number"));
     } else {
@@ -142,19 +192,6 @@ export default function Home() {
   };
 
 
-  /**
- * Handles key press events to trigger relevant actions.
- * @param {object} event - The key press event.
- */
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      if (activeView === 'prime') {
-        handleCheckPrime();
-      } else {
-        handleAddNumber();
-      }
-    }
-  };
 
 
   /**
@@ -170,31 +207,6 @@ export default function Home() {
   };
 
 
-/**
- * Handles the change event for the prime number input.
- * @param {object} event - The input change event.
- */
-const handlePrimeNumberInputChange = (event) => {
-  const { value } = event.target;
-
-  if (value.length > 17) {
-    showToastMessage("warning", tToasts("prime_number_too_long"));
-  }
-
-  if (isNotANumber(value)) {
-    showToastMessage("error", tToasts("not_number"));
-  } else {
-    setIsPrime(null); // Assuming you want to reset isPrime when input changes
-    setPrimeNumber(value);
-  }
-};
-
-  /**
- * Toggles between the prime number view and the order numbers view.
- */
-  const toggleView = () => {
-    setActiveView((prevView) => (prevView === 'prime' ? 'order' : 'prime'));
-  };
 
 
   return (
@@ -277,7 +289,7 @@ const handlePrimeNumberInputChange = (event) => {
                 onChange={handlePrimeNumberInputChange}
                 onKeyDown={handleKeyPress}
               />
-              <Button loading={loading} color="#FF4040" autoContrast onClick={() => { handleCheckPrime() }}>
+              <Button className="prime-number-button" color="#FF4040" autoContrast onClick={() => { handleCheckPrime() }}>
                 {tCommon("verify")}
               </Button>
               {isPrime !== null && (
@@ -326,6 +338,7 @@ const handlePrimeNumberInputChange = (event) => {
               alt="2 Logical Bottom Logo"
               className="UE-bottom-logos"
             />
+            <span className="logical-reserved-text">© 2023 2Logical, All Rights Reserved.</span>
           </footer>
         </div>
       </main>
