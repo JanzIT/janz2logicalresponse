@@ -20,6 +20,7 @@ export default function Home() {
   const { i18n } = useTranslation();
   const tCommon = useTranslation('common').t;
   const tToasts = useTranslation('toasts').t;
+  const tFooter = useTranslation('footer').t;
 
   const router = useRouter();
 
@@ -66,6 +67,9 @@ export default function Home() {
  * @param {string} message - The message to be displayed.
  */
   const showToastMessage = (type, message) => {
+    if(toastActive){
+      setToastActive(false)
+    }
     if (!toastActive) {
       showToast({ type, msg: message });
       setToastMessage(message);
@@ -338,7 +342,7 @@ export default function Home() {
               alt="2 Logical Bottom Logo"
               className="UE-bottom-logos"
             />
-            <span className="logical-reserved-text">© 2023 2Logical, All Rights Reserved.</span>
+            <span className="logical-reserved-text">{tFooter("date_variable", { year: new Date().getFullYear() })}</span>
           </footer>
         </div>
       </main>
@@ -349,7 +353,7 @@ export default function Home() {
 export async function getServerSideProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common", "toasts"]))
+      ...(await serverSideTranslations(locale, ["common", "toasts", "footer"]))
     }
   };
 }

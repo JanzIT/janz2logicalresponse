@@ -16,15 +16,14 @@
 body {
   font-family: "Poppins Semibold", sans-serif;
   color: white;
-  word-spacing: 2px;
-  font-size: 16px; /* Adjusted font size for mobile */
+  font-size: 16px; 
 }
 
 .header-text {
   font-family: "Poppins Semibold", sans-serif;
   color: white;
   word-spacing: 2px;
-  font-size: 20px; /* Adjusted font size for mobile */
+  font-size: 25px; 
   text-align: center;
   padding-top: 25px;
 }

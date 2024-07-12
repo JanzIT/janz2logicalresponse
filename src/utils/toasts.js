@@ -20,7 +20,7 @@ export function showToast(props = {}) {
     const {
         type = 'warning',
         msg = 'This is a toast!',
-        time = 3000,
+        time = 2000,
         theme = 'light',
         pauseOnHover = true,
         closeOnClick = true,
