@@ -6,10 +6,9 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Button } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 
 export default function Home() {
-  const [loading, { toggle }] = useDisclosure();
+  const [loading, setLoading] = useState(null)
   const [primeNumber, setPrimeNumber] = useState('');
   const [isPrime, setIsPrime] = useState(null);
   const [numbers, setNumbers] = useState([]);
@@ -24,6 +23,10 @@ export default function Home() {
 
   const router = useRouter();
 
+  /**
+ * Checks the Language route and changes it.
+ * @param {string} newLanguage - The new language to switch to.
+ */
   function handleChangeLanguage(newLanguage) {
     if (router.locale !== newLanguage) {
       const { pathname, asPath, query } = router;
@@ -31,6 +34,12 @@ export default function Home() {
     }
   }
 
+
+  /**
+ * Displays a toast message.
+ * @param {string} type - The type of the toast message ('error', 'success', etc.).
+ * @param {string} message - The message to be displayed.
+ */
   const showToastMessage = (type, message) => {
     if (!toastActive) {
       showToast({ type, msg: message });
@@ -42,29 +51,12 @@ export default function Home() {
     }
   };
 
-  const checkPrime = (num) => {
-    const bigNum = BigInt(num)
-    const numSQRT = Math.sqrt(num)
-    
-    if (bigNum < 2) {
-      showToastMessage("error", tToasts("isnt_prime"));
-      return false;
-    }
 
-    for (let i = 2; i <= numSQRT ; i++) {
-      if (bigNum % BigInt(i) === 0n) {
-        showToastMessage("error", tToasts("isnt_prime"));
-        return false;
-      }
-    }
-
-    showToastMessage("success", tToasts("is_prime"));
-    return true;
-  };
-
-
+  /**
+  * Handles the prime number check logic.
+  */
   const handleCheckPrime = () => {
-
+    setLoading(true)
     if (primeNumber.toString().includes('.')) {
       showToastMessage("error", tToasts("decimal_number"));
       return false;
@@ -85,6 +77,40 @@ export default function Home() {
     else { setIsPrime(checkPrime(primeNumber)); }
   };
 
+
+  /**
+ * Checks if a number is prime.
+ * @param {number|string} num - The number to be checked.
+ * @returns {boolean} - Returns true if the number is prime, false otherwise.
+ */
+  const checkPrime = (num) => {
+    const bigNum = BigInt(num)
+    const numSQRT = Math.sqrt(num)
+
+    if (bigNum < 2) {
+      showToastMessage("error", tToasts("isnt_prime"));
+      setLoading(false)
+      return false;
+    }
+
+    for (let i = 2; i <= numSQRT; i++) {
+      if (bigNum % BigInt(i) === 0n) {
+        showToastMessage("error", tToasts("isnt_prime"));
+        setLoading(false)
+        return false;
+      }
+    }
+
+    showToastMessage("success", tToasts("is_prime"));
+    setLoading(false)
+    return true;
+  };
+
+
+  /**
+ * Handles the change event for the add number input.
+ * @param {object} event - The input change event.
+ */
   const handleChangeAddNumber = (event) => {
     event.preventDefault();
     const { value } = event.target;
@@ -95,14 +121,18 @@ export default function Home() {
     }
   };
 
-  const handleAddNumber = (event) => {
+
+  /**
+ * Handles adding a number to the list of numbers.
+ */
+  const handleAddNumber = () => {
     if (numbers.length >= 10) {
       showToastMessage("error", tToasts("limit_reached"));
     }
     else if (currentAddNumber.length === 0) {
       showToastMessage("warning", tToasts("no_number"));
     }
-      else if (currentAddNumber.length > 45) {
+    else if (currentAddNumber.length > 45) {
       showToastMessage("warning", tToasts("number_too_long"));
     }
     else {
@@ -111,6 +141,11 @@ export default function Home() {
     }
   };
 
+
+  /**
+ * Handles key press events to trigger relevant actions.
+ * @param {object} event - The key press event.
+ */
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       if (activeView === 'prime') {
@@ -121,6 +156,10 @@ export default function Home() {
     }
   };
 
+
+  /**
+ * Resets the list of numbers.
+ */
   const handleResetNumbers = () => {
     if (numbers.length === 0) {
       showToastMessage("warning", tToasts("no_number"));
@@ -130,19 +169,33 @@ export default function Home() {
     }
   };
 
-  const handlePrimeNumberInputChange = (event) => {
-    const { value } = event.target;
-    setPrimeNumber("")
-    if (isNotANumber(value)) {
-      showToastMessage("error", tToasts("not_number"));
-    } else {
-      setPrimeNumber(value);
-    }
-  };
 
+/**
+ * Handles the change event for the prime number input.
+ * @param {object} event - The input change event.
+ */
+const handlePrimeNumberInputChange = (event) => {
+  const { value } = event.target;
+
+  if (value.length > 17) {
+    showToastMessage("warning", tToasts("prime_number_too_long"));
+  }
+
+  if (isNotANumber(value)) {
+    showToastMessage("error", tToasts("not_number"));
+  } else {
+    setIsPrime(null); // Assuming you want to reset isPrime when input changes
+    setPrimeNumber(value);
+  }
+};
+
+  /**
+ * Toggles between the prime number view and the order numbers view.
+ */
   const toggleView = () => {
     setActiveView((prevView) => (prevView === 'prime' ? 'order' : 'prime'));
   };
+
 
   return (
     <>
@@ -174,7 +227,6 @@ export default function Home() {
               <Button
                 variant={i18n.language === "en" ? "filled" : "outline"}
                 onClick={() => handleChangeLanguage("en")}
-                loading={loading}
                 autoContrast
                 className="prime-number-button"
               >
@@ -183,7 +235,6 @@ export default function Home() {
               <Button
                 variant={i18n.language === "pt" ? "filled" : "outline"}
                 onClick={() => handleChangeLanguage("pt")}
-                loading={loading}
                 autoContrast
                 className="prime-number-button"
               >
@@ -192,7 +243,6 @@ export default function Home() {
               <Button
                 variant={i18n.language === "es" ? "filled" : "outline"}
                 onClick={() => handleChangeLanguage("es")}
-                loading={loading}
                 autoContrast
                 className="prime-number-button"
               >
@@ -227,7 +277,7 @@ export default function Home() {
                 onChange={handlePrimeNumberInputChange}
                 onKeyDown={handleKeyPress}
               />
-              <Button color="#FF4040" autoContrast onClick={handleCheckPrime}>
+              <Button loading={loading} color="#FF4040" autoContrast onClick={() => { handleCheckPrime() }}>
                 {tCommon("verify")}
               </Button>
               {isPrime !== null && (

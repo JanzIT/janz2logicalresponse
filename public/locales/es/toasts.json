@@ -6,6 +6,7 @@
     "limit_reached": "Ya hay 10 números",
     "decimal_number": "Por favor ingrese hasta 10 números enteros",
     "no_numbers": "¡Necesitas ingresar un número primero!",
-    "number_too_long": "El número no puede exceder los 45 dígitos."
+    "number_too_long": "El número no puede exceder los 45 dígitos.",
+    "prime_number_too_long": "Número demasiado largo, esto puede tardar un poco..."
   }
   
