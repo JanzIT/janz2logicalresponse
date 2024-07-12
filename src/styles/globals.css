@@ -100,10 +100,8 @@ body {
   transition: transform 0.3s ease;
 }
 
-.add-number-button:hover,
-.prime-number-button:hover,
-.reset-number-button:hover {
-  transform: scale(1.1); 
+.prime-number-button:hover {
+  transform: scale(1.1);
 }
 
 .prime-main-text,
