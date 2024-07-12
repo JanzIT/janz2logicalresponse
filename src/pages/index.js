@@ -317,7 +317,7 @@ const handlePrimeNumberInputChange = (event) => {
           )}
           <footer className="footer">
             <img
-              src="2logicalBottomLogo.webp"
+              src="2logicallogo.webp"
               alt="2 Logical Bottom Logo"
               className="logical-bottom-logo"
             />
