@@ -40,6 +40,7 @@ body {
   margin-top: 20px;
   height: 29px;
   width: 203px;
+  max-width: 100%;
 }
 
 .UE-bottom-logos {
@@ -54,14 +55,6 @@ body {
   object-fit: cover;
   margin-bottom: 20px;
 }
-
-/* .Button-group {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-direction: column;
-  } */
 
 .main-button-group {
   display: flex;
