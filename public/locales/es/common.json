@@ -4,7 +4,7 @@
   "order_numbers": "Ordenar números",
   "prime_number_check": "Número primo",
   "prime_main_text": "Verifique si el número es primo:",
-  "order_main_text": "Introduce hasta 10 números para ordenarlos:",
+  "order_main_text": "Ingresa un número a la vez y presiona Enter o haz clic en `Agregar número`:",
   "ordered_numbers": "Números ordenados:",
   "check_prime": "Verificar si es primo",
   "add_number": "Agregar número",

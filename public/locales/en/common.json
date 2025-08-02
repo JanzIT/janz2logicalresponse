@@ -1,13 +1,12 @@
 {
-    "challenge_response_text": "Janz's Internship Challenge Response",
-    "verify": "Verify",
-    "order_numbers": "Order Numbers",
-    "prime_number_check": "Prime Number",
-    "prime_main_text": "Check if the number is prime:",
-    "order_main_text": "Enter up to 10 numbers to sort them:",
-    "ordered_numbers": "Ordered numbers:",
-    "check_prime": "Check if prime",
-    "add_number": "Add number",
-    "reset_numbers": "Reset numbers"
-  }
-  
+  "challenge_response_text": "Janz's Internship Challenge Response",
+  "verify": "Verify",
+  "order_numbers": "Order Numbers",
+  "prime_number_check": "Prime Number",
+  "prime_main_text": "Check if the number is prime:",
+  "order_main_text": "Enter one number at a time and press Enter or click `Add Number`:",
+  "ordered_numbers": "Ordered numbers:",
+  "check_prime": "Check if prime",
+  "add_number": "Add number",
+  "reset_numbers": "Reset numbers"
+}
